@@ -1,0 +1,78 @@
+#!/bin/bash
+#Autor: Kristjan Peterson
+
+
+#Skript saab käsurealt kolm parameetrit. 1. Sisendfail 2. Väljundfail 3. otsitav
+
+# exit 1 sisendfail ei ole loetav
+# exit 2 väljundfaili ei saa kirjutamiseks avada
+# exit 3 ei sisestatud täpselt kolm parameetrit
+
+export LC_ALL=C
+
+# Kui on õige arv parameetreid määratakse muutujad
+if [ $# -eq 3 ] 
+then
+    SISEND=$1
+    VALJUND=$2
+    OTSITAV=$3
+    RIDADEARV= wc -l $SISEND
+    echo $RIDADEARV
+else
+    echo -e "\nKasutamine: "
+    echo -e "$0 SISENDFAIL VÄLJUNDFAIL OTSITAV\n"
+    exit 3
+fi
+
+#kontroll, kas sisendfail on fail ja loetav
+if [ ! -r $SISEND ]
+then
+    echo "Sisendfail ei ole loetav"
+    exit 1
+else
+    echo "$SISEND"
+fi
+
+if [ -e $VALJUND ]
+then
+    VALJUND=$VALJUND\_$(date +'%Y-%m-%d-%H-%M')
+    echo $VALJUND 
+fi
+
+#Väljundfaili kirjutamine 
+
+echo "$OTSITAV" > $VALJUND || echo "ei saa väljundfaili kirjutada" exit 2
+
+# Sisendfaili lugemine, mille sees on väljundfaili kirjutamine.
+while read -r line
+do
+    #Kas sisendfailist loetud reale vastab mõni fail või kaust
+    if [ -e $line ]
+    then
+	if [ -f $line ]
+	    #Loetud rida on failinimi
+            then
+	    #3.parameetrina antud stringi otsimine failist
+	    cat $line | grep $OTSITAV > /dev/null 2>&1
+            if [ $? -gt 0 ]
+	    then
+	        echo "$line,OLEMAS" >> $VALJUND
+	    else
+	        echo "$line,POLE OLEMAS" >> $VALJUND
+	    fi
+        else
+	    #Loetud rida on kaust
+	    #3. parameetrina antud stringi järgi kaustade ja failide otsing
+	    find $line -name $OTSITAV > /dev/null 2>&1
+	    if [ $? -gt 0 ]
+	    then
+		echo "$line,OLEMAS" >> $VALJUND
+	    else
+		echo "$line,POLE OLEMAS" >> $VALJUND
+	    fi
+	fi
+    else
+    #Loetud rida ei ole fail ega kaust
+    echo "$line,POLE OLEMAS" >> $VALJUND
+    fi
+done < "$SISEND"
