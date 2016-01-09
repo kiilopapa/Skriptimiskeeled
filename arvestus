@@ -64,7 +64,7 @@ do
 	    #Loetud rida on kaust
 	    #3. parameetrina antud stringi järgi kaustade ja failide otsing
 	    find $line -name $OTSITAV > /dev/null 2>&1
-	    if [ $? -gt 0 ]
+	    if [ $? -eq 0 ]
 	    then
 		echo "$line,OLEMAS" >> $VALJUND
 	    else
