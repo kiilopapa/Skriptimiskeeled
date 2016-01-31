@@ -1,0 +1,39 @@
+Loo skript, mis saab käsurealt 2 parameetrit: 1. sisendfaili nimi, 2. väljundfaili nimi 
+
+Skript loeb sisendfailist Skriptimiskeelte ainesse registreerunud isikute nimed ja loob I-Teele sobiva väljundfaili (CSV). Faili laiend ei pea tingimata CSV olema.
+
+Numbri ja nime eraldaja on \t, nime ja grupi eraldaja on tühik. Ideaalis peaks skript ignoreerima tühje ridu ja päist.
+
+Näide sisendfailist: 
+
+---8<--- 
+
+Nr	Tudeng	Kokku	Märkused 
+
+1   Eesnimi Perenimi AK31  
+
+ 
+
+2   Toomas Tudeng AK31  
+
+ 
+
+3   Tiiu Talu AK31  
+
+---8<--- 
+
+
+Väljund on CSV kujul <kasutajatunnus>,<nimi>,<e-post>,<token> 
+
+- Kasutajatunnus on EIK kasutajatunnus: eesnime esitäht+perenimi, max 8 tähemärki
+- Nimi on ees- ja perekonnanimi
+- e-post on EIK e-postiaadress (eesnimi.perenimi@itcollege.ee)
+- token on 20 suvalist tähemärki (a-z, A-Z, 0-9, -, _) 
+
+Näide väljundfailist:
+
+---8<--- 
+eperenim,Eesnimi Perenimi,eesnimi.perenimi@itcollege.ee,eu9rv-4nu39vtrunamir 
+ttudeng,Toomas Tudeng,toomas.tudeng@itcollege.ee,acyb389qhaum_yc43cbf 
+ttalu,Tiiu Talu,tiiu.talu@itcollege.ee,esi0a-yntb_4e7gcfyesa
+---8<---
